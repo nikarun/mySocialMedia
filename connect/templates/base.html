@@ -14,7 +14,7 @@
 
 <!-- Custom CSS -->
 <link href="{% static 'css/main.css' %}" rel="stylesheet">
-<link href="fonts/flaticon.css' %}" rel="stylesheet">
+<link href="{% static 'fonts/flaticon.css' %}" rel="stylesheet">
 <link href="{% static 'css/style.css' %}" rel="stylesheet">
 <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
 
@@ -30,8 +30,8 @@
 <!-- HTML5 Shim and Respond.js' %} IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js' %} doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js' %}"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js' %}/1.4.2/respond.min.js' %}"></script>
+    <script src="{% static 'https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js' %}"></script>
+    <script src="{% static 'https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js' %}"></script>
 <![endif]-->
 
 </head>
@@ -64,11 +64,12 @@
           <div class="collapse navbar-collapse navbar-expand-lg" id="socialNav" data-parent="#nav-resposive">
             <div class="social_icons">
               <ul>
-                <li><a href="professional-details.html#."><i class="fab fa-whatsapp"></i></a></li>
-                <li><a href="professional-details.html#."><i class="fab fa-facebook-f"></i></a></li>
-                <li><a href="professional-details.html#."><i class="fab fa-twitter"></i></a></li>
-                <li><a href="professional-details.html#."><i class="fab fa-google-plus-g"></i></a></li>
-                <li><a href="professional-details.html#."><i class="fab fa-linkedin-in"></i></a></li>
+
+                   {% if profile.facebook %}<li> <a href="{{profile.facebook}}"><i class="fab fa-facebook-f"></i></a></li> {% endif %}
+                   {% if profile.twitter %}<li> <a href="{{profile.twitter}}"><i class="fab fa-twitter"></i></a> </li>{% endif %}
+                   {% if profile.instagram %} <li><a href="{{profile.instagram}}"><i class="fa fa-instagram"></i></a> </li>{% endif %}
+                   {% if profile.linkedin %} <li><a href="{{profile.linkedin}}"><i class="fab fa-linkedin-in"></i></a> </li>{% endif %}
+                   {% if profile.email %} <li><a href="mailto:parihararun3@gmail.com"><i class="far fa-envelope"></i></a></li>{% endif %}
                 <li><a href="{% url 'logout' %}"><i class="fa fa-lock-open"></i></a></li>
               </ul>
             </div>
@@ -162,12 +163,12 @@
               </div>
               <div class="col-md-6 social-links">
                 <ul class="right">
-                  <li><a href="professional-details.html#."><i class="fab fa-facebook"></i></a></li>
-                  <li><a href="professional-details.html#."><i class="fab fa-twitter"></i></a></li>
-                  <li><a href="professional-details.html#."><i class="fab fa-dribbble"></i></a></li>
-                  <li><a href="professional-details.html#."><i class="fab fa-behance"></i></a></li>
-                  <li><a href="professional-details.html#."><i class="fab fa-pinterest"></i></a></li>
-                  <li><a href="professional-details.html#."><i class="fab fa-google-plus"></i></a></li>
+                  {% if profile.facebook %}<li> <a href="{{profile.facebook}}"><i class="fab fa-facebook-f"></i></a></li> {% endif %}
+                   {% if profile.twitter %}<li> <a href="{{profile.twitter}}"><i class="fab fa-twitter"></i></a> </li>{% endif %}
+                   {% if profile.instagram %} <li><a href="{{profile.instagram}}"><i class="fa fa-instagram"></i></a> </li>{% endif %}
+                   {% if profile.linkedin %} <li><a href="{{profile.linkedin}}"><i class="fab fa-linkedin-in"></i></a> </li>{% endif %}
+                   {% if profile.email %} <li><a href="mailto:parihararun3@gmail.com"><i class="far fa-envelope"></i></a></li>{% endif %}
+
                 </ul>
               </div>
             </div>

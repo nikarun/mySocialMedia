@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',Login,name="login"),
     path('in/<str:Username>/',UserProfile,name="UserProfile"),
-    path('register',Register,name="register"),
-    path('Logout',Logout,name="logout")
+    path('in/Edit/<str:Username>/',Update_User_Details,name="UpdateUserDetails"),
+    path('register/',Register,name="register"),
+    path('Logout/',Logout,name="logout")
     #path('index/',index,name="index")
-]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

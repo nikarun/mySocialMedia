@@ -2,7 +2,6 @@
   {% load static %}
   <!-- Content -->
 {% block body %}
-
   <div id="content"> 
     
     <!-- Papular Companies -->
@@ -17,11 +16,20 @@
               <div class="">
                 <div class="user-in">
                   <div class="pro-avatar"> <img src="{{profile.image.url}}" alt="" class="img-responsive" > </div>
-                  <h1>{{profile.name}}<a class="veri" href="professional-details.html#." data-toggle="tooltip" data-placement="top" title="Verified Member"> <i class="fa fa-check"></i> </a> </h1>
-                  <h6>{{profile.about}}</h6>
-                  <div class="social-links"> <a href="professional-details.html#."><i class="fab fa-facebook-f"></i></a> <a href="professional-details.html#."><i class="fab fa-twitter"></i></a> <a href="professional-details.html#."><i class="fab fa-google"></i></a> <a href="professional-details.html#."><i class="fab fa-linkedin-in"></i></a> <a href="professional-details.html#."><i class="far fa-bookmark"></i> </a> <a href="professional-details.html#."><i class="far fa-envelope"></i> </a> <a href="professional-details.html#." class="float-right margin-right-0" data-toggle="tooltip" data-placement="top" title="Reports"><i class="fa fa-exclamation"></i> </a>
+                  <h1>{{profile.name}}<a class="veri" href="#." data-toggle="tooltip" data-placement="top" title="Verified Member"> <i class="fa fa-check"></i> </a> </h1>
+                  <h4 style="color:white">{{ profile.about }}</h4style>
+                  <h6>{{profile.profile_title}}</h6>
+                  <div class="social-links">
+                   {% if profile.facebook %} <a href="{{profile.facebook}}"><i class="fab fa-facebook-f"></i></a> {% endif %}
+                   {% if profile.twitter %} <a href="{{profile.twitter}}"><i class="fab fa-twitter"></i></a> {% endif %}
+                   {% if profile.instagram %} <a href="{{profile.instagram}}"><i class="fa fa-instagram"></i></a> {% endif %}
+                   {% if profile.linkedin %} <a href="{{profile.linkedin}}"><i class="fab fa-linkedin-in"></i></a> {% endif %}
+                    <a href="professional-details.html#."><i class="far fa-bookmark"></i> </a>
+                    <a href="professional-details.html#."><i class="far fa-envelope"></i> </a>
+                    <a href="professional-details.html#." class="float-right margin-right-0" data-toggle="tooltip" data-placement="top" title="Reports"><i class="fa fa-exclamation"></i> </a>
 
                   </div>
+
                   
                   <!-- Followers -->
                   <div class="followr">
@@ -94,7 +102,11 @@
                 <div class="sidebar"> 
                   
                   <!-- Heading for mobile Collapse -->
-                  <h5 class="main-title margin-bottom-30">User Information</h5>
+                  <h5 class="main-title margin-bottom-30">User Information
+                   {% if request.user.username == profile.usr.username %}
+                    <a href={% url 'UpdateUserDetails' request.user.username %}><i class="fa fa-pencil-alt"></i></a>
+                  {% endif %}
+                    </h5>
                   <div class="navbar-expand-lg"> 
                     <!-- Heading for mobile Collapse --> 
                     <a class="collapsed main-title fr-mob" data-toggle="collapse" data-target="#cmpny-info" aria-expanded="false"> User Information </a>
@@ -104,32 +116,47 @@
                         <!-- Company Information -->
                         <div class="sidebar-information">
                           <ul class="single-category">
+                            {% if profile.name %}
                             <li>
                               <h6 class="title">Name</h6>
-                              <span class="subtitle">Adnan</span> </li>
+                              <span class="subtitle">{{profile.name}}</span> </li>
+                            {% endif %}
+
                             <li>
                               <h6 class="title">Age</h6>
-                              <span class="subtitle">23 Years</span> </li>
+                              <span class="subtitle">22 years</span> </li>
+                            {% if profile.location %}
                             <li>
                               <h6 class="title">Location</h6>
-                              <span class="subtitle">Melbourne, Australia</span> </li>
+                              <span class="subtitle">{{profile.location}}</span> </li>
+                            {% endif %}
+                            {% if profile.experience %}
                             <li>
                               <h6 class="title">Experiance</h6>
-                              <span class="subtitle">8 Years</span> </li>
+                              <span class="subtitle">{{profile.experience}}years</span> </li>
+                            {% endif %}
+                            {% if profile.degree %}
                             <li>
                               <h6 class="title">Degree</h6>
-                              <span class="subtitle">MultiMedia Arts (NCA)</span> </li>
+                              <span class="subtitle">{{profile.degree}}</span> </li>
+                            {% endif %}
+                            {% if profile.contact %}
                             <li>
                               <h6 class="title">Phone</h6>
-                              <span class="subtitle">00971 548 2808</span> </li>
+                              <span class="subtitle">{{profile.contact}}</span> </li>
+                            {% endif %}
+                            {% if profile.email %}
                             <li>
                               <h6 class="title">Email</h6>
-                              <div class="subtitle"><a href="professional-details.html#.">adnan@webicode.com</a> </div>
+                              <div class="subtitle"><a href="professional-details.html#.">{{profile.email}}</a> </div>
                             </li>
+                            {% endif %}
+                            {% if profile.website %}
                             <li>
-                              <h6 class="title">Website</h6>
-                              <div class="subtitle"> <a href="https://webicode.com" target="_blank">https://webicode.com</a> </div>
+                               <h6 class="title">Website</h6>
+                              <div class="subtitle"><a href="professional-details.html#.">{{profile.website}}</a> </div>
                             </li>
+                            {% endif %}
                           </ul>
                         </div>
                       </div>
@@ -179,12 +206,8 @@
                     <div class="profile-main">
                       <h3>About the Professionals</h3>
                       <div class="profile-in">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, maxime, excepturi, mollitia, voluptatibus 
-                          similique aliquidautem laudantium sapiente ad enim ipsa modi labo rum accusantium deleniti neque. </p>
-                        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, nihil, dolores, culpa ullam vero ipsum placeat 
-                          accusamus nemoitate id molestiae consectetur quae pariatur repudi andae vel ex quaerat nam iusto aliquid 
-                          laborum quia adipisci aut ut imcati nisi deleniti tempore maxime sequi fugit reiciendis libero quo. Rerum
-                          assumenda.</p>
+
+                        <p> {{profile.about}}</p>
                         
                         <!-- Progress Skills -->
                         <div class="skills"> 
