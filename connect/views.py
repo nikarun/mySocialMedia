@@ -4,6 +4,7 @@ from django.contrib.auth import login,logout,authenticate
 from .forms import *
 from .models import *
 from django.contrib.auth.models import User
+from django.db.models import Q
 from datetime import date
 #def index(request):
     #return render(request,"index.html")
@@ -56,12 +57,22 @@ def UserProfile(request, Username): # redirect to page of logged nin user
     if not user:
         loggen_in_username=request.user.username #to replace your entered wrong username with right username
         return redirect("UserProfile", loggen_in_username)
-
+    connection=None
+    if request.user.username != Username:
+        user1=User.objects.get(username = Username)
+        user2 = User.objects.get(username=request.user.username)
+        UserData1=UserData.objects.get(usr=user1)
+        UserData2 = UserData.objects.get(usr=user2)
+        connection=Connections.objects.filter(Q(sender=UserData1,receiver=UserData2) | Q(sender=UserData2,receiver=UserData1))
+        print(connection)
+        print("you are not logged in User")
+        if connection:
+            connection=connection[0]
     Usr = user[0] #your usr will be list so u have to acces only 1st name from that
 
     User_data = UserData.objects.get(usr = Usr)
 
-    dict={"profile":User_data}
+    dict={"profile":User_data,"connection":connection}
 
     return render(request, "user_details.html", dict)
 def Update_User_Details(request,Username):
@@ -85,4 +96,18 @@ def Update_User_Details(request,Username):
     return render(request,"Update_User_Details.html",dict)
 
 
+def All_Profession(request):
+    all_users=UserData.objects.all()
+    dict={"allusers":all_users}
+    return render(request,"professionals.html",dict)
 
+def Manage_Your_Connections(request,action,u_id):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    if action == "Send_Request":
+        senderUser=User.objects.get(username=request.user.username)
+        sender=UserData.objects.get(usr=senderUser)
+        receiver=UserData.objects.get(id=u_id)
+        Connections.objects.create(sender = sender, receiver = receiver)
+        return redirect("UserProfile",receiver.usr.username)
+    return hr("you want"+str(action)+"for user"+str(u_id))

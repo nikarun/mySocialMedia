@@ -26,8 +26,13 @@
                    {% if profile.linkedin %} <a href="{{profile.linkedin}}"><i class="fab fa-linkedin-in"></i></a> {% endif %}
                     <a href="professional-details.html#."><i class="far fa-bookmark"></i> </a>
                     <a href="professional-details.html#."><i class="far fa-envelope"></i> </a>
-                    <a href="professional-details.html#." class="float-right margin-right-0" data-toggle="tooltip" data-placement="top" title="Reports"><i class="fa fa-exclamation"></i> </a>
-
+                    {% if request.user.username != profile.usr.username %}
+                        {% if connection %}
+                    <a class="float-right margin-right-0" data-toggle="tooltip" data-placement="top" title="pending"><i class="fa fa-exclamation"></i>
+                        {% else %}
+                    <a href="{% url 'connections' 'Send_Request' profile.id %}" class="float-right margin-right-0" data-toggle="tooltip" data-placement="top" title="send_request"><i class="fa fa-exclamation"></i> </a>
+                       {% endif %}
+                      {% endif %}
                   </div>
 
                   

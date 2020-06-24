@@ -22,3 +22,9 @@ class UserData(models.Model):
     def __str__(self):
         return self.name
 
+class Connections(models.Model):
+    sender=models.ForeignKey(UserData,on_delete=models.CASCADE,related_name="sender",blank=True,null=True) #related name used because in one class u can use foriegn key for one object only to overcome these prblm use related name
+    receiver=models.ForeignKey(UserData,on_delete=models.CASCADE,related_name="receiver",blank=True,null=True)
+    status=models.CharField(max_length=30,null=True,blank=True,default="Sent")
+    date=models.DateField(auto_now_add=True,null=True)
+
