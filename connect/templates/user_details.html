@@ -17,7 +17,7 @@
                 <div class="user-in">
                   <div class="pro-avatar"> <img src="{{profile.image.url}}" alt="" class="img-responsive" > </div>
                   <h1>{{profile.name}}<a class="veri" href="#." data-toggle="tooltip" data-placement="top" title="Verified Member"> <i class="fa fa-check"></i> </a> </h1>
-                  <h4 style="color:white">{{ profile.about }}</h4style>
+                 {% if profile.about  %} <h4 style="color:white">{{ profile.about }}</h4style>{% endif %}
                   <h6>{{profile.profile_title}}</h6>
                   <div class="social-links">
                    {% if profile.facebook %} <a href="{{profile.facebook}}"><i class="fab fa-facebook-f"></i></a> {% endif %}

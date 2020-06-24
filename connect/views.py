@@ -96,9 +96,45 @@ def Update_User_Details(request,Username):
     return render(request,"Update_User_Details.html",dict)
 
 
-def All_Profession(request):
+def All_Profession(request,what):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    logged_in_user=User.objects.get(username=request.user.username)
+    me=UserData.objects.get(usr=logged_in_user)
+
+    data=""
+    if what == "all":
+        data = UserData.objects.all()
+    if what == "Request":
+        connection = Connections.objects.filter(receiver=me, status="Sent")
+        User_Data = []
+        for c in connection:
+            ud = UserData.objects.get(id=c.sender.id)
+            User_Data.append(ud)
+        data = User_Data
+
+    if what == "Sent":
+        connection = Connections.objects.filter(sender=me,status="Sent")
+        User_Data = []
+        for c in connection:
+            ud = UserData.objects.get(id=c.receiver.id)
+            User_Data.append(ud)
+        data = User_Data
+    if what == "Friends":
+        connection = Connections.objects.filter(Q(sender=me,status="friend") | Q(receiver=me,status="friend")).order_by("-date")
+        Data = []
+        for c in connection:
+            User_Data = UserData.objects.get(id=c.sender.id)
+            if User_Data.id != me.id:
+                Data.append(User_Data)
+
+            User_Data = UserData.objects.get(id=c.receiver.id)
+            if User_Data.id != me.id:
+                Data.append(User_Data)
+            data = Data
+
     all_users=UserData.objects.all()
-    dict={"allusers":all_users}
+    dict={"allusers":data,"what":what}
     return render(request,"professionals.html",dict)
 
 def Manage_Your_Connections(request,action,u_id):
@@ -110,4 +146,20 @@ def Manage_Your_Connections(request,action,u_id):
         receiver=UserData.objects.get(id=u_id)
         Connections.objects.create(sender = sender, receiver = receiver)
         return redirect("UserProfile",receiver.usr.username)
+    if action == "Accept_Request" or action == "Reject_Request":
+        ReceiverUser = User.objects.get(username=request.user.username)
+        receiver = UserData.objects.get(usr=ReceiverUser)
+        sender = UserData.objects.get(id=u_id)
+        connection = Connections.objects.filter(sender=sender, receiver=receiver)
+        if connection:
+            for c in connection:
+                if action == "Accept_Request":
+                    c.status = "friend"
+                    c.save()
+                if action == "Reject_Request":
+                    c.status = "rejected"
+                    c.save()
+
+        return redirect("professionals", "all")
+
     return hr("you want"+str(action)+"for user"+str(u_id))
