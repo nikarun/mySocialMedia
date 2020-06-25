@@ -33,3 +33,19 @@ class Edit_User_Details(forms.ModelForm):
             "instagram":forms.URLInput(attrs={"class": "form-control"}),
 
         }
+
+class StartCompany_Form(forms.ModelForm):
+    class Meta:
+        model = Company_Model
+        exclude = ("usr",)
+        widgets = {
+            "name":forms.TextInput(attrs={"class":"form-control", }),
+            "website":forms.TextInput(attrs={"class":"form-control", }),
+            "address":forms.TextInput(attrs={"class":"form-control", }),
+            "title":forms.TextInput(attrs={"class":"form-control", }),
+            "map_embad":forms.Textarea(attrs={"class":"form-control", }),
+            "email":forms.EmailInput(attrs={"class":"form-control", }),
+            "number":forms.NumberInput(attrs={"class":"form-control", }),
+            "logo":forms.FileInput(attrs={"class":"form-control","onchange":"loadFile(event)" }),
+
+        }

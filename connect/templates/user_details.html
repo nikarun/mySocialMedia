@@ -16,8 +16,15 @@
               <div class="">
                 <div class="user-in">
                   <div class="pro-avatar"> <img src="{{profile.image.url}}" alt="" class="img-responsive" > </div>
-                  <h1>{{profile.name}}<a class="veri" href="#." data-toggle="tooltip" data-placement="top" title="Verified Member"> <i class="fa fa-check"></i> </a> </h1>
+                  <h1>{{profile.name}}
+                    {% if profile.usr.username == request.user.username %}
+                        {% if not request.user.company_model_set.all %}
+                    <a href="{% url 'addcompany' %}" class="margin-right-0" data-toggle="tooltip" data-placement="top" title="Start your company"><i class="fa fa-plus-square"></i>
+                        {% endif %}
+                      {% endif %}
+                      <a class="veri" href="#." data-toggle="tooltip" data-placement="top" title="Verified Member"> <i class="fa fa-check"></i> </a> </h1>
                  {% if profile.about  %} <h4 style="color:white">{{ profile.about }}</h4style>{% endif %}
+
                   <h6>{{profile.profile_title}}</h6>
                   <div class="social-links">
                    {% if profile.facebook %} <a href="{{profile.facebook}}"><i class="fab fa-facebook-f"></i></a> {% endif %}

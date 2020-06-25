@@ -101,7 +101,12 @@ def All_Profession(request,what):
         return redirect("login")
     logged_in_user=User.objects.get(username=request.user.username)
     me=UserData.objects.get(usr=logged_in_user)
+    ###### Count Request Section #########
+    con_request = Connections.objects.filter(receiver=me, status="Sent")
+    con_sent = Connections.objects.filter(sender=me, status="Sent")
+    con_friend = Connections.objects.filter(Q(sender=me, status="friend") | Q(receiver=me, status="friend")).order_by("-date")
 
+    # -----X Count Request Section End ---X_------#
     data=""
     if what == "all":
         data = UserData.objects.all()
@@ -134,8 +139,32 @@ def All_Profession(request,what):
             data = Data
 
     all_users=UserData.objects.all()
-    dict={"allusers":data,"what":what}
+    dict={"allusers":data,"what":what,"con_request":con_request, "con_sent":con_sent,"con_friend":con_friend}
     return render(request,"professionals.html",dict)
+
+
+def All_Professional_Html(request, what):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    logged_in_user = User.objects.get(username = request.user.username)
+    me = UserData.objects.get(usr = logged_in_user)
+    ###### Count Request Section #########
+    con_request = Connections.objects.filter(receiver=me, status="Sent")
+    con_sent = Connections.objects.filter(sender=me, status="Sent")
+    con_friend = Connections.objects.filter(Q(sender=me, status="friend") | Q(receiver=me, status="friend")).order_by( "-date")
+
+    #-----X Count Request Section End ---X_------#
+
+    data = ""
+    if what == "all":
+        data = UserData.objects.all()
+    Dict = {
+        "all_users": data, "what": what, "con_request": con_request, "con_sent": con_sent,
+        "con_friend": con_friend, "me":me
+    }
+
+    return render(request, "professionals_html.html", Dict)
 
 def Manage_Your_Connections(request,action,u_id):
     if not request.user.is_authenticated:
@@ -163,3 +192,21 @@ def Manage_Your_Connections(request,action,u_id):
         return redirect("professionals", "all")
 
     return hr("you want"+str(action)+"for user"+str(u_id))
+
+def Add_Company(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    form = StartCompany_Form()
+    if request.method == "POST":
+        form=StartCompany_Form(request.POST,request.FILES)
+        if form.is_valid():
+            data = form.save(commit=False)
+
+            data.usr = request.user
+            data.save()
+            return redirect("login")
+    dict={"form":form}
+    return render(request,"add_company.html",dict)
+
+
+

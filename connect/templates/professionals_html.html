@@ -12,7 +12,7 @@
         <h2>Professionals Available</h2>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="professionals.html#">Home</a></li>
+            <li class="breadcrumb-item"><a href="professionals_html.html#">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Professionals</li>
           </ol>
         </nav>
@@ -31,24 +31,24 @@
               <!-- filter Btns -->
               <ul class="cd-filters">
                 {% if what == "all" %}
-                <li class="filter"><a class="selected" href="{% url 'professionals' 'all' %}">All</a></li>
+                <li class="filter"><a class="selected" href="{% url 'allprofessionals_html' 'all' %}">All</a></li>
                 {% else %}
-                <li class="filter"><a class="" href="{% url 'professionals' 'all' %}">All</a></li>
+                <li class="filter"><a class="" href="{% url 'allprofessionals_html' 'all' %}">All</a></li>
                 {% endif %}
                 {% if what == "Request" %}
-                <li class="filter"><a class ="selected" href="{% url 'professionals' 'Request' %}" >Requests ({{con_request.count}})</a></li>
+                <li class="filter"><a class ="selected" href="{% url 'allprofessionals_html' 'Request' %}" >Requests ({{con_request.count}})</a></li>
                 {% else %}
-                <li class="filter"><a class ="" href="{% url 'professionals' 'Request' %}" >Requests ({{con_request.count}})</a></li>
+                <li class="filter"><a class ="" href="{% url 'allprofessionals_html' 'Request' %}" >Requests ({{con_request.count}})</a></li>
                 {% endif %}
                 {% if what == "Sent" %}
-                <li class="filter"><a class="selected" href="{% url 'professionals' 'Sent' %}">Sent ({{con_sent.count}})</a></li>
+                <li class="filter"><a class="selected" href="{% url 'allprofessionals_html' 'Sent' %}">Sent ({{con_sent.count}})</a></li>
                 {% else %}
-                <li class="filter"><a class="" href="{% url 'professionals' 'Sent' %}">Sent ({{con_sent.count}})</a></li>
+                <li class="filter"><a class="" href="{% url 'allprofessionals_html' 'Sent' %}">Sent ({{con_sent.count}})</a></li>
                 {% endif %}
                 {% if what == "Friends" %}
-                <li class="filter"><a class ="selected" href="{% url 'professionals' 'Friends' %}">Friends ({{con_friend.count}})</a></li>
+                <li class="filter"><a class ="selected" href="{% url 'allprofessionals_html' 'Friends' %}">Friends ({{con_friend.count}})</a></li>
                 {% else %}
-                <li class="filter"><a class ="" href="{% url 'professionals' 'Friends' %}">Friends ({{con_friend.count}})</a></li>
+                <li class="filter"><a class ="" href="{% url 'allprofessionals_html' 'Friends' %}">Friends ({{con_friend.count}})</a></li>
                 {% endif %}
 
               </ul>
@@ -118,58 +118,76 @@
               {% endfor %}
               {% endif %}
               {% if what == "Request" %}
-              {% for i in allusers %}
-              {% if i.usr.username != request.user.username %}
+              {% for i in me.receiver.all %}
+              {% if i.status == 'Sent' %}
               <li class="mix">
                 <div class="team-inside">
-                  <div class="img-sec"> <img src="{{i.image.url}}" class="img-responsive" alt="{{i.name}}" >
+                  <div class="img-sec"> <img src="{{i.sender.image.url}}" class="img-responsive" alt="{{i.sender.name}}" >
                     <div class="hover-over">
-                      <div class="position-center-center"> <a href="{% url 'connections' 'Accept_Request' i.id %}" class="btn">Accept</a> <a href="{% url 'connections' 'Reject_Request' i.id  %}" class="btn">Reject</a> </div>
+                      <div class="position-center-center"> <a href="{% url 'connections' 'Accept_Request' i.sender.id %}" class="btn">Accept</a> <a href="{% url 'connections' 'Reject_Request' i.sender.id  %}" class="btn">Reject</a> </div>
                     </div>
                   </div>
                   <div class="txt-sec">
-                    <h5><a href="professionals.html#."> {{i.name}} </a></h5>
-                    <span>{{i.profile_title}}</span> <span><i class="fa fa-map-marker"></i>{{i.location}}</span> </div>
+                    <h5><a href="professionals.html#."> {{i.sender.name}} </a></h5>
+                    <span>{{i.sender.profile_title}}</span> <span><i class="fa fa-map-marker"></i>{{i.sender.location}}</span> </div>
                 </div>
               </li>
               {% endif %}
               {% endfor %}
               {% endif %}
               {% if what == "Sent" %}
-              {% for i in allusers %}
-              {% if i.usr.username != request.user.username %}
+              {% for i in me.sender.all %}
+              {% if i.status == 'Request' %}
               <li class="mix">
                 <div class="team-inside">
-                  <div class="img-sec"> <img src="{{i.image.url}}" class="img-responsive" alt="{{i.name}}" >
+                  <div class="img-sec"> <img src="{{i.receiver.image.url}}" class="img-responsive" alt="{{i.receiver.name}}" >
                     <div class="hover-over">
-                      <div class="position-center-center"> <a href="professionals.html#" class="btn">Cancel</a> <a href="{% url 'UserProfile' i.usr.username %}" class="btn">View Profile</a> </div>
+                      <div class="position-center-center"> <a href="professionals.html#" class="btn">Cancel</a> <a href="{% url 'UserProfile' i.receiver.usr.username %}" class="btn">View Profile</a> </div>
                     </div>
                   </div>
                   <div class="txt-sec">
-                    <h5><a href="professionals.html#."> {{i.name}} </a></h5>
-                    <span>{{i.profile_title}}</span> <span><i class="fa fa-map-marker"></i>{{i.location}}</span> </div>
+                    <h5><a href="professionals.html#."> {{i.receiver.name}} </a></h5>
+                    <span>{{i.receiver.profile_title}}</span> <span><i class="fa fa-map-marker"></i>{{i.receiver.location}}</span> </div>
                 </div>
               </li>
               {% endif %}
               {% endfor %}
               {% endif %}
               {% if what == "Friends" %}
-              {% for i in allusers %}
-              {% if i.usr.username != request.user.username %}
+              {% if me.sender.all or me.receiver.all %}
+              {% for i in me.sender.all %}
+              {% if i.status == "friend" %}
               <li class="mix">
                 <div class="team-inside">
-                  <div class="img-sec"> <img src="{{i.image.url}}" class="img-responsive" alt="{{i.name}}" >
+                  <div class="img-sec"> <img src="{{i.receiver.image.url}}" class="img-responsive" alt="{{i.receiver.name}}" >
                     <div class="hover-over">
-                      <div class="position-center-center"> <a href="professionals.html#" class="btn">Remove_Connections</a> <a href="{% url 'UserProfile' i.usr.username %}" class="btn">View Profile</a> </div>
+                      <div class="position-center-center"> <a href="professionals.html#" class="btn">Remove_Connections</a> <a href="{% url 'UserProfile' i.receiver.usr.username %}" class="btn">View Profile</a> </div>
                     </div>
                   </div>
                   <div class="txt-sec">
-                    <h5><a href="professionals.html#."> {{i.name}} </a></h5>
-                    <span>{{i.profile_title}}</span> <span><i class="fa fa-map-marker"></i>{{i.location}}</span> </div>
+                    <h5><a href="professionals.html#."> {{i.receiver.name}} </a></h5>
+                    <span>{{i.receiver.profile_title}}</span> <span><i class="fa fa-map-marker"></i>{{i.receiver.location}}</span> </div>
                 </div>
               </li>
               {% endif %}
               {% endfor %}
+              {% for i in me.receiver.all %}
+              {% if i.status == "friend" %}
+              <li class="mix">
+                <div class="team-inside">
+                  <div class="img-sec"> <img src="{{i.sender.image.url}}" class="img-responsive" alt="{{i.sender.name}}" >
+                    <div class="hover-over">
+                      <div class="position-center-center"> <a href="professionals.html#" class="btn">Remove_Connections</a> <a href="{% url 'UserProfile' i.sender.usr.username %}" class="btn">View Profile</a> </div>
+                    </div>
+                  </div>
+                  <div class="txt-sec">
+                    <h5><a href="professionals.html#."> {{i.sender.name}} </a></h5>
+                    <span>{{i.sender.profile_title}}</span> <span><i class="fa fa-map-marker"></i>{{i.sender.location}}</span> </div>
+                </div>
+              </li>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
               {% endif %}
 
             </ul>

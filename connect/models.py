@@ -28,3 +28,15 @@ class Connections(models.Model):
     status=models.CharField(max_length=30,null=True,blank=True,default="Sent")
     date=models.DateField(auto_now_add=True,null=True)
 
+
+class Company_Model(models.Model):
+    usr = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    logo = models.ImageField(null=True, blank=True)
+    number = models.CharField(max_length=100, null=True, blank=True)
+    email = models.CharField(max_length=100, null=True, blank=True)
+    website = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=100, null=True, blank=True)
+    map_embad = models.TextField(null=True, blank=True)
+
