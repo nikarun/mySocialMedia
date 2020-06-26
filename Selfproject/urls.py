@@ -29,7 +29,9 @@ urlpatterns = [
     path('professionals/<str:what>/',All_Profession,name="professionals"),
     path('connections/<str:action>/<int:u_id>/',Manage_Your_Connections,name="connections"),
     path('professionals_html/<str:what>/',All_Professional_Html,name="allprofessionals_html"),
-    path('addcompany/',Add_Company,name="addcompany")
+    path('addcompany/',Add_Company,name="addcompany"),
+    path('Your_companydetails/',CompanyDetails,name="companydetails"),
+    path('PostNewBlog/',NewPost,name="post")
 
     #path('index/',index,name="index")
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

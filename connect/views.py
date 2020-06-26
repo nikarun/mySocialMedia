@@ -71,8 +71,9 @@ def UserProfile(request, Username): # redirect to page of logged nin user
     Usr = user[0] #your usr will be list so u have to acces only 1st name from that
 
     User_data = UserData.objects.get(usr = Usr)
+    blog_form=UserBlog_Form()
 
-    dict={"profile":User_data,"connection":connection}
+    dict={"profile":User_data,"connection":connection,"form":blog_form}
 
     return render(request, "user_details.html", dict)
 def Update_User_Details(request,Username):
@@ -201,12 +202,41 @@ def Add_Company(request):
         form=StartCompany_Form(request.POST,request.FILES)
         if form.is_valid():
             data = form.save(commit=False)
-
+            Map = data.map_embad
+            if 'width="600"' in Map:
+                Map = Map.split('width="600"')
+                Map.insert(1, 'width="100%"')
+                Map = " ".join(Map)
+                data.map_embad = Map
             data.usr = request.user
             data.save()
             return redirect("login")
     dict={"form":form}
     return render(request,"add_company.html",dict)
 
+def CompanyDetails(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    usr = request.user
+    company = Company_Model.objects.filter(usr=usr)
+    print(company)
+    if not company:
+        return redirect("login")
+
+    Dict = {
+        "company": company
+    }
+    return render(request, "companies-details.html",Dict)
 
 
+def NewPost(request):
+    if request.method == "POST":
+        form = UserBlog_Form(request.POST)
+        if form.is_valid():
+            data = form.save(commit = False)
+            data.usr = request.user
+            data.save()
+            print("Blog Submitted...@")
+
+    return redirect("login")

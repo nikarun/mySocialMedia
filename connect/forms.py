@@ -44,8 +44,20 @@ class StartCompany_Form(forms.ModelForm):
             "address":forms.TextInput(attrs={"class":"form-control", }),
             "title":forms.TextInput(attrs={"class":"form-control", }),
             "map_embad":forms.Textarea(attrs={"class":"form-control", }),
+            "map_url": forms.URLInput(attrs={"class": "form-control", }),
             "email":forms.EmailInput(attrs={"class":"form-control", }),
             "number":forms.NumberInput(attrs={"class":"form-control", }),
             "logo":forms.FileInput(attrs={"class":"form-control","onchange":"loadFile(event)" }),
+
+        }
+
+class UserBlog_Form(forms.ModelForm):
+    class Meta:
+        model = Blogs_Model
+        exclude = ("usr",)
+        widgets = {
+            "title":forms.TextInput(attrs={"class":"form-control", }),
+            "youtube_video":forms.Textarea(attrs={"class":"form-control", }),
+            "blog":forms.Textarea(attrs={"class":"form-control", })
 
         }

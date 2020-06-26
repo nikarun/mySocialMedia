@@ -38,5 +38,12 @@ class Company_Model(models.Model):
     website = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
     title = models.CharField(max_length=100, null=True, blank=True)
+    map_url = models.URLField(null=True,blank=True)
     map_embad = models.TextField(null=True, blank=True)
 
+class Blogs_Model(models.Model):
+    usr = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    blog = models.TextField(null=True, blank=True)
+    youtube_video = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
